@@ -1,0 +1,275 @@
+---
+title: Diffusion|DDPM 理解、数学、代码
+date: 2022-11-28
+author: Kevin 吴嘉文
+category:
+- 知识笔记
+tag:
+- CV
+- Diffusion
+mathjax: true
+toc: true
+comments: 笔记
+---
+
+## Diffusion
+
+论文：Denoising Diffusion Probabilistic Models。
+
+DDPM 似乎是最近热门的 AIGC 的基础，扩散模型在 2015 年已经被提出（[Deep Unsupervised Learning using Nonequilibrium Thermodynamics](https://arxiv.org/abs/1503.03585)），而 DDPM 将扩散模型应用在了图像生成领域上。
+
+DDPM 的大致思想是：我用 AI 构建一个模型，相比于 GAN 或者 VAE 等一步到位生成图像。我让这个模型每步只完成图像的 1/T，经过 T 步后，图像就完成了。如下图：
+
+
+### Forward process：制造训练集
+
+<img src="https://pic1.zhimg.com/80/v2-c77c080d146c4e9d9edf17e264ebdb98_1440w.webp">
+
+
+
+给定原图片 $x_0$，我们的目标是生成 $x_1, x_2, ..., x_T$ 如上图，方式就是每一次在原图上加上随机的噪声 $\epsilon_t = N(0,1)$。我们可以通过
+
+$$
+x_t = \sqrt\alpha_t x_{t-1} + \sqrt\beta_t\epsilon_t\tag 1
+$$
+
+来迭代生成。其中 $\alpha_t = 1-\beta_t$。通过 $(1)$ 式不断套娃可以得到：
+
+$$
+x_t = \sqrt {\alpha_t...\alpha_1}x_0 +\underbrace {\sqrt {\alpha_t...\alpha_2\beta_1}\epsilon_1 + ... +\sqrt {\alpha_t\beta_{t-1}}\epsilon_{t-1} + \sqrt\beta_t\epsilon_t}_{\text{ 噪声项 }}\tag 2
+$$
+
+因为 $\epsilon$ 为相互独立的正态分布，因此 $(2)$ 式中的噪声项可视为均值为 0，方差为 
+
+$$
+\begin{aligned}
+&\alpha_t...\alpha_1 + \alpha_t...\alpha_2\beta_1 + ...+ \alpha_t\beta_{t-1}+\beta_t
+\\ = & (\alpha_1+\beta_1)\alpha_t...\alpha_2 +...+ \alpha_t\beta_{t-1}+\beta_t \\ = &\alpha_{t}+\beta_t
+\\=&1
+\end{aligned}
+$$
+
+因此得出论文的前向扩散公式$(4)$:
+
+$$
+q(x_t|x_0) =N (x_t; \sqrt {\bar \alpha_t} x_0, (1-\bar\alpha_t)I),\bar \alpha_t=\prod_T\alpha_t \tag 4
+$$
+
+在该步骤中，$\beta$ 被设置成了不可学习参数，范围在 `[1e-4, 0.02]` 之间，随着时间步 `t` 线性变换，这也极大的简化了训练时的优化目标推理。此外，DDPM 设置了 `T=1000`，在加噪 1000 步之后，图像就完全变成了无信号的电视画面。
+
+### Reverse process
+
+这一步希望拟合的分布是 $p_\theta(x_{t-1}|x_t) = N (x_{t-1}; \mu _\theta (x_t, t), \Sigma_\theta (x_t, t))$。其中，作者假设方差项 $\Sigma_\theta (x_t, t) = \sigma_t^2=\beta_t$。（当然原论文中还提出了其他的方差项，我们不在此讨论）
+
+首先我们能够通过 $(4)$ 推理得到（论文中的公式 $(15)$）：
+
+$$
+x_{0} = \frac 1{\sqrt {\bar \alpha_t}}(x_t-\sqrt{1-\bar\alpha_t}\epsilon_t) \tag 5
+$$
+
+因此图像采样过程可以定义为 $q(x_{t-1}|x_t)=q(x_{t-1}|x_t, x_0) = N (x_{t-1}; \mu _\theta (x_t, x_0), \sigma_t I)$，（采样过程可以视为马尔科夫链）。
+
+$$
+\begin{aligned}
+q\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t, \mathbf{x}_0\right) &=q\left(\mathbf{x}_t \mid \mathbf{x}_{t-1}, \mathbf{x}_0\right) \frac{q\left(\mathbf{x}_{t-1} \mid \mathbf{x}_0\right)}{q\left(\mathbf{x}_t \mid \mathbf{x}_0\right)} \\
+& \propto \exp \left(-\frac{1}{2}\left(\frac{\left(\mathbf{x}_t-\sqrt{\alpha_t} \mathbf{x}_{t-1}\right)^2}{\beta_t}+\frac{\left(\mathbf{x}_{t-1}-\sqrt{\bar{\alpha}_{t-1}} \mathbf{x}_0\right)^2}{1-\bar{\alpha}_{t-1}}-\frac{\left(\mathbf{x}_t-\sqrt{\bar{\alpha}_t} \mathbf{x}_0\right)^2}{1-\bar{\alpha}_t}\right)\right) \\
+&=\exp \left(-\frac{1}{2}\left(\frac{\mathbf{x}_t^2-2 \sqrt{\alpha_t} \mathbf{x}_t \mathbf{x}_{t-1}+\alpha_t \mathbf{x}_{t-1}^2}{\beta_t}+\frac{\mathbf{x}_{t-1}^2-2 \sqrt{\bar{\alpha}_{t-1}} \mathbf{x}_0 \mathbf{x}_{t-1}+\bar{\alpha}_{t-1} \mathbf{x}_0^2}{1-\bar{\alpha}_{t-1}}-\frac{\left(\mathbf{x}_t-\sqrt{\bar{\alpha}_t} \mathbf{x}_0\right)^2}{1-\bar{\alpha}_t}\right)\right) \\
+&=\exp \left(-\frac{1}{2}\left(\left(\frac{\alpha_t}{\beta_t}+\frac{1}{1-\bar{\alpha}_{t-1}}\right) \mathbf{x}_{t-1}^2-\left(\frac{2 \sqrt{\alpha_t}}{\beta_t} \mathbf{x}_t+\frac{2 \sqrt{\bar{\alpha}_{t-1}}}{1-\bar{\alpha}_{t-1}} \mathbf{x}_0\right) \mathbf{x}_{t-1}+C\left(\mathbf{x}_t, \mathbf{x}_0\right)\right)\right)
+\end{aligned} \tag 6
+$$
+
+把上式对应到正态分布公式当中，可以得到论文中的公式 $(7)$：
+
+$$
+\begin{aligned}
+\sigma_t^2=\tilde{\beta}_t &=1 /\left(\frac{\alpha_t}{\beta_t}+\frac{1}{1-\bar{\alpha}_{t-1}}\right)\\&=1 /\left(\frac{\alpha_t-\bar{\alpha}_t+\beta_t}{\beta_t\left(1-\bar{\alpha}_{t-1}\right)}\right)\\&=\frac{1-\bar{\alpha}_{t-1}}{1-\bar{\alpha}_t} \cdot \beta_t \\
+\tilde{\boldsymbol{\mu}}_t\left(\mathbf{x}_t, \mathbf{x}_0\right) &=\left(\frac{\sqrt{\alpha_t}}{\beta_t} \mathbf{x}_t+\frac{\sqrt{\bar{\alpha}_{t-1}}}{1-\bar{\alpha}_{t-1}} \mathbf{x}_0\right) /\left(\frac{\alpha_t}{\beta_t}+\frac{1}{1-\bar{\alpha}_{t-1}}\right) \\
+&=\left(\frac{\sqrt{\alpha_t}}{\beta_t} \mathbf{x}_t+\frac{\sqrt{\bar{\alpha}_{t-1}}}{1-\bar{\alpha}_{t-1}} \mathbf{x}_0\right) \frac{1-\bar{\alpha}_{t-1}}{1-\bar{\alpha}_t} \cdot \beta_t \\
+&=\frac{\sqrt{\alpha_t}\left(1-\bar{\alpha}_{t-1}\right)}{1-\bar{\alpha}_t} \mathbf{x}_t+\frac{\sqrt{\bar{\alpha}_{t-1}} \beta_t}{1-\bar{\alpha}_t} \mathbf{x}_0
+\end{aligned} \tag 7
+$$
+
+由于在采样过程中我们不知道真实的 $x_0$，所以用本文公式 $(5)$ 来预测 $x_0$。这样采样过程变为：
+
+$$
+\begin{aligned}
+\hat x_{t-1} &= \mu_\theta(x_t,x_0) + \sigma_tz\\
+&= \frac{\sqrt{\alpha_t}\left(1-\bar{\alpha}_{t-1}\right)}{1-\bar{\alpha}_t} \mathbf{x}_t+\frac{\sqrt{\bar{\alpha}_{t-1}} \beta_t}{1-\bar{\alpha}_t} \mathbf{x}_0 + \sqrt { \frac{1-\bar{\alpha}_{t-1}}{1-\bar{\alpha}_t} \beta_t}·z\\
+&=\frac{\sqrt{\alpha_t}\left(1-\bar{\alpha}_{t-1}\right)}{1-\bar{\alpha}_t} \mathbf{x}_t
++\frac{\sqrt{\bar{\alpha}_{t-1}} \beta_t}{1-\bar{\alpha}_t}(\frac 1{\sqrt {\bar \alpha_t}}(x_t-\sqrt{1-\bar\alpha_t}\epsilon_\theta) )+\sqrt{\frac{1-\bar{\alpha}_{t-1}}{1-\bar{\alpha}_t} \beta_t}·z\\
+&= \frac 1 {\sqrt \alpha _t}x_t\left( \frac{\beta_t+\alpha_t-\bar\alpha_t}{1-\bar \alpha_t}  \right) + \frac 1{\sqrt \alpha_t\sqrt {1-\bar\alpha_t}}\epsilon_\theta + \sqrt{\frac{1-\bar{\alpha}_{t-1}}{1-\bar{\alpha}_t}\beta_t}\cdot z\\
+&=\frac 1{\sqrt { \alpha_t}}(x_t-\frac{\beta_t}{\sqrt{1-\bar\alpha_t}}\epsilon_\theta(x_t,t)) + \sigma_t z\\ &\text{where }z=N(0,I)
+\end{aligned}\tag 8
+$$
+
+因此我们得到了论文 3.2 部分中的采样公式。
+
+### 优化目标
+
+在训练过程中，我们只需要对每个 $t$ 步骤添加的噪声 $\epsilon_\theta$ 进行损失优化就行。以下两个角度出发都能够说明拟合 $\epsilon_\theta$ 是有效的。在部分版本的 DDPM 代码中，开可以看到作者们设置的 `pred_noise` 参数，用于选择模型的预测目标为噪声 $\epsilon_\theta$ 或者图像像素 $x_{t-1}$。
+
+#### 从 MSE 角度看
+
+直接对图像的像素差进行优化：
+
+$$
+L = ||x_{t-1} - \hat x_{t-1}||^2\tag 9
+$$
+
+由于在预测时候我们不知道原先噪声，因此使用预测的噪声 $\epsilon_\theta$ 来预测图像 $\hat x_{t-1} = \frac 1{\sqrt {\alpha_t}}(x_t-\sqrt{1-\alpha}\epsilon_\theta(x_t,t))$ ，带入 $(9)$ 式得到：
+
+$$
+\begin{aligned}
+L &= ||\frac 1{\sqrt {\alpha_t}}(x_t-\sqrt{1-\alpha_t}\epsilon) - \frac 1{\sqrt { \alpha_t}}(x_t-\sqrt{1-\alpha_t}\epsilon_\theta(x_t, t))||^2\\
+&= \frac {1-\alpha_t}{\alpha_t}||\epsilon_t - \epsilon_\theta(x_t, t)  ||^2\\
+&= \frac {1-\alpha_t}{\alpha_t}||\epsilon_t - \epsilon_\theta\left(\sqrt{\alpha_t} \mathbf{x}_0+\sqrt{1-{\alpha}_t} \boldsymbol{\epsilon}_t, t\right)  ||^2
+\end{aligned}\tag {10}
+$$
+
+#### 从变分边界角度看
+
+我们的目标是获得$x$的生成模型，因此可以优化：
+
+$$
+\begin{aligned}
+\mathbb E[-\log p_\theta(x_0)] &= \mathbb E\left[-\log p_\theta(x_0) \int p_\theta(x_{1:T})dx_{1:T}\right]  \\
+&= \mathbb E \left[-\log \int p_\theta(x_{0:T})dx_{1:T}\right]\\
+&= \mathbb E\left[-\log \int \frac {p_\theta(x_{0:T})}{q(x_{1:T}|x_0)}q(x_{1:T}|x_0)dx_{1:T} \right ] \\
+&\le \mathbb E\left[- \log\frac{p_{\theta(x_{0:T})}}{\int q(x_{1:T}|x_0)q(x_{1:T}|x_0)dx_{1:T}}\right] \\
+&=\mathbb E\left[-\log \frac {p_\theta(x_{0:T})}{q(x_{1:T}|x_0)}   \right]
+\\ &= \mathbb E \left[-\log p_\theta(x_T) - \sum_{t\ge1}\log\frac{p_\theta(x_{t-1}|x_t)}{q(x_t|x_{t-1})}   \right] =L_{VLB}
+\end{aligned}\tag{11}
+$$
+
+因此我们得到了论文中的公式 $(3)$，我们只需要对其中的变分边界进行优化即可：
+
+$$
+\begin{aligned}
+L_{VLB}&=\mathbb{E}_q\left[-\log p_\theta\left(\mathbf{x}_T\right)+\sum_{t=2}^T \log \frac{q\left(\mathbf{x}_t \mid \mathbf{x}_{t-1}\right)}{p_\theta\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t\right)}+\log \frac{q\left(\mathbf{x}_1 \mid \mathbf{x}_0\right)}{p_\theta\left(\mathbf{x}_0 \mid \mathbf{x}_1\right)}\right] \\
+&=\mathbb{E}_q\left[-\log p_\theta\left(\mathbf{x}_T\right)+\sum_{t=2}^T \log \left(\frac{q\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t, \mathbf{x}_0\right)}{p_\theta\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t\right)} \cdot \frac{q\left(\mathbf{x}_t \mid \mathbf{x}_0\right)}{q\left(\mathbf{x}_{t-1} \mid \mathbf{x}_0\right)}\right)+\log \frac{q\left(\mathbf{x}_1 \mid \mathbf{x}_0\right)}{p_\theta\left(\mathbf{x}_0 \mid \mathbf{x}_1\right)}\right] \\
+&=\mathbb{E}_q\left[-\log p_\theta\left(\mathbf{x}_T\right)+\sum_{t=2}^T \log \frac{q\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t, \mathbf{x}_0\right)}{p_\theta\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t\right)}+\sum_{t=2}^T \log \frac{q\left(\mathbf{x}_t \mid \mathbf{x}_0\right)}{q\left(\mathbf{x}_{t-1} \mid \mathbf{x}_0\right)}+\log \frac{q\left(\mathbf{x}_1 \mid \mathbf{x}_0\right)}{p_\theta\left(\mathbf{x}_0 \mid \mathbf{x}_1\right)}\right] \\
+&=\mathbb{E}_q\left[-\log p_\theta\left(\mathbf{x}_T\right)+\sum_{t=2}^T \log \frac{q\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t, \mathbf{x}_0\right)}{p_\theta\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t\right)}+\log \frac{q\left(\mathbf{x}_T \mid \mathbf{x}_0\right)}{q\left(\mathbf{x}_1 \mid \mathbf{x}_0\right)}+\log \frac{q\left(\mathbf{x}_1 \mid \mathbf{x}_0\right)}{p_\theta\left(\mathbf{x}_0 \mid \mathbf{x}_1\right)}\right] \\
+&=\mathbb{E}_q\left[\log \frac{q\left(\mathbf{x}_T \mid \mathbf{x}_0\right)}{p_\theta\left(\mathbf{x}_T\right)}+\sum_{t=2}^T \log \frac{q\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t, \mathbf{x}_0\right)}{p_\theta\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t\right)}-\log p_\theta\left(\mathbf{x}_0 \mid \mathbf{x}_1\right)\right]\\
+&= \mathbb{E}_q\left[\underbrace{D_{\mathrm{KL}}\left(q\left(\mathbf{x}_T \mid \mathbf{x}_0\right) \| p\left(\mathbf{x}_T\right)\right)}_{L_T}+\sum_{t>1} \underbrace{D_{\mathrm{KL}}\left(q\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t, \mathbf{x}_0\right) \| p_\theta\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t\right)\right)}_{L_{t-1}} \underbrace{-\log p_\theta\left(\mathbf{x}_0 \mid \mathbf{x}_1\right)}_{L_0}\right]
+\end{aligned}\tag {12}
+$$
+
+因此我们得到了论文中的公式 $(5)$ ，通过以上式子可以看出 $L_T$ 部分为 forward process 分布，在我们之前的设定下是无法优化的，$L_0$ 是固定的噪声，因此我们可以优化 $L_{t-1}$ 项。因为我们在前面假设了 $q(x_{t-1}|x_t,x_0)$ 与 $p_\theta(x_{t-1}|x_t)$ 都服从正态分布，因此根据：
+
+$$
+\begin{aligned} K L\left(\mathcal{N}\left(\mu_{1}, \sigma_{1}^{2}\right) \| \mathcal{N}\left(\mu_{2}, \sigma_{2}^{2}\right)\right) &=\int_{x} \frac{1}{\sqrt{2 \pi} \sigma_{1}} e^{-\frac{\left(x-\mu_{1}\right)^{2}}{2 \sigma_{1}^{2}}} \log \frac{\frac{1}{\sqrt{2 \pi} \sigma_{1}} e^{-\frac{\left(x-\mu_{1}\right)^{2}}{2 \sigma_{1}^{2}}}}{\frac{1}{\sqrt{2 \pi} \sigma_{2}} e^{-\frac{\left(x-\mu_{2}\right)^{2}}{2 \sigma_{2}^{2}}}} d x \\ &=\int_{x} \frac{1}{\sqrt{2 \pi} \sigma_{1}} e^{-\frac{\left(x-\mu_{1}\right)^{2}}{2 \sigma_{1}^{2}}}\left[\log \frac{\sigma_{2}}{\sigma_{1}}-\frac{\left(x-\mu_{1}\right)^{2}}{2 \sigma_{1}^{2}}+\frac{\left(x-\mu_{2}\right)^{2}}{2 \sigma_{2}^{2}}\right] d x \\&=\log \frac{\sigma_{2}}{\sigma_{1}}-\frac{1}{2}+\frac{\sigma_{1}^{2}+\left(\mu_{1}-\mu_{2}\right)^{2}}{2 \sigma_{2}^{2}}
+\end{aligned}\tag{13}
+$$
+
+其中：
+
+$$
+\begin{aligned}\log \frac{\sigma_{2}}{\sigma_{1}} \int_{x} \frac{1}{\sqrt{2 \pi} \sigma_{1}} e^{-\frac{\left(x-\mu_{1}\right)^{2}}{2 \sigma_{1}^{2}}} d x &=\log \frac{\sigma_{2}}{\sigma_{1}}\\
+-\frac{1}{2 \sigma_{1}^{2}} \int_{x}\left(x-\mu_{1}\right)^{2} \frac{1}{\sqrt{2 \pi} \sigma_{1}} e^{-\frac{\left(x-\mu_{1}\right)^{2}}{2 \sigma_{1}^{2}}} d x&=-\frac{1}{2 \sigma_{1}^{2}} \sigma_{1}^{2}=-\frac{1}{2} \\
+\frac{1}{2 \sigma_{2}^{2}} \int_{x}\left(x-\mu_{2}\right)^{2} \frac{1}{\sqrt{2 \pi} \sigma_{1}} e^{-\frac{\left(x-\mu_{1}\right)^{2}}{2 \sigma_{1}^{2}}} d x &=\frac{1}{2 \sigma_{2}^{2}} \int_{x}\left(x^{2}-2 \mu_{2} x+\mu_{2}^{2}\right) \frac{1}{\sqrt{2 \pi} \sigma_{1}} e^{-\frac{\left(x-\mu_{1}\right)^{2}}{2 \sigma_{1}^{2}}} d x\\ &=\frac{\sigma_{1}^{2}+\mu_{1}^{2}-2 \mu_{1} \mu_{2}+\mu_{2}^{2}}{2 \sigma_{2}^{2}}=\frac{\sigma_{1}^{2}+\left(\mu_{1}-\mu_{2}\right)^{2}}{2 \sigma_{2}^{2}}
+\end{aligned}\tag{14}
+$$
+
+因此：
+
+$$
+\begin{aligned}
+L_{t-1} &=
+D_{\mathrm{KL}}\left(q\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t, \mathbf{x}_0\right) \| p_\theta\left(\mathbf{x}_{t-1} \mid \mathbf{x}_t\right)\right) \\&=D_{\mathrm{KL}}\left(\mathcal{N}\left(\mathbf{x}_{t-1} ; \tilde{\boldsymbol{\mu}}\left(\mathbf{x}_t, \mathbf{x}_0\right), \sigma_t^2 \mathbf{I}\right) \| \mathcal{N}\left(\mathbf{x}_{t-1} ; \boldsymbol{\mu}_\theta\left(\mathbf{x}_t, t\right), \sigma_t^2 \mathbf{I}\right)\right) \\
+&=\frac{1}{2 \sigma_t^2}\left\|\tilde{\boldsymbol{\mu}}_t\left(\mathbf{x}_t, \mathbf{x}_0\right)-\boldsymbol{\mu}_\theta\left(\mathbf{x}_t, t\right)\right\|^2 + C
+\end{aligned}\tag{15}
+$$
+
+所以我们得到了论文中的公式 $(8)$。由于我们在前面假设了  $q(x_{t-1}|x_t,x_0)$ 与 $p_\theta(x_{t-1}|x_t)$ 的方差值相同，因此上式中 $C=0$。将公式 $(5)$ 带入，得到：
+
+$$
+\begin{aligned}
+L_t &=\mathbb{E}\left[\frac{1}{2\sigma^2}\left\|\tilde{\boldsymbol{\mu}}_t\left(\mathbf{x}_t, \mathbf{x}_0\right)-\boldsymbol{\mu}_\theta\left(\mathbf{x}_t, t\right)\right\|^2\right] \\
+&=\mathbb{E}\left[\frac{1}{2\sigma^2}\left\|\frac{1}{\sqrt{\alpha_t}}\left(\mathbf{x}_t-\frac{1-\alpha_t}{\sqrt{1-\bar{\alpha}_t}} \boldsymbol{\epsilon}_t\right)-\frac{1}{\sqrt{\alpha_t}}\left(\mathbf{x}_t-\frac{1-\alpha_t}{\sqrt{1-\bar{\alpha}_t}} \boldsymbol{\epsilon}_\theta\left(\mathbf{x}_t, t\right)\right)\right\|^2\right] \\
+&=\mathbb{E}\left[\frac{\left(1-\alpha_t\right)^2}{2 \alpha_t\left(1-\bar{\alpha}_t\right)\sigma^2}\left\|\boldsymbol{\epsilon}_t-\boldsymbol{\epsilon}_\theta\left(\mathbf{x}_t, t\right)\right\|^2\right] \\
+&=\mathbb{E}\left[\frac{\left(1-\alpha_t\right)^2}{2 \alpha_t\left(1-\bar{\alpha}_t\right)\sigma^2}\left\|\boldsymbol{\epsilon}_t-\boldsymbol{\epsilon}_\theta\left(\sqrt{\bar{\alpha}_t} \mathbf{x}_0+\sqrt{1-\bar{\alpha}_t} \boldsymbol{\epsilon}_t, t\right)\right\|^2\right]
+\end{aligned}\tag {16}
+$$
+
+因此我们得到了论文中的公式 $(12)$，在训练时直接对噪声 $\epsilon$ 进行优化即可。
+
+## 代码
+
+参考代码 [TF-DDPM](https://github.com/hojonathanho/diffusion)  [torch-DDPM ](https://github.com/openai/improved-diffusion/blob/main/improved_diffusion/gaussian_diffusion.py):
+
+其中函数分别以及对应的公式：
+
++ `q_sample` 对应本文公式 $(4)$： $x_t = \sqrt {\bar\alpha_t} x_0 + \sqrt {1 - \bar\alpha_t} \epsilon$ 
++ `predict_start_from_noise` 对应本文公式 $(5)$: $x_{0} = \frac 1{\sqrt {\bar \alpha_t}}(x_t-\sqrt{1-\bar\alpha_t}\epsilon)$
++ `q_posterior_mean_variance` 对应本文公式 $(7)$: 
+
+$$
+\tilde{\beta}_t =\frac{1-\bar{\alpha}_{t-1}}{1-\bar{\alpha}_t} \cdot \beta_t\\
+\mu _t(x_t, x_0) = \frac{\sqrt {\hat\alpha_{t-1}}\beta }{1-\hat\alpha_t}x_0 + \frac {\sqrt \alpha_t (1-\hat\alpha_{t-1})}{1-\hat\alpha_t}x_t
+$$
+
++ `p_mean_variance` 对应本文公式 $(5)+(7)$
++ `p_sample` 对应 `p_mean_variance`  + 本文公式 $(8)$ 
+
+细心的朋友们会发现官方给的代码中，sampling 方式分为：
+
+$$
+x_t\xrightarrow{model} \epsilon_\theta(x_t,t) \xrightarrow {\text{ 公式 }(5)}\hat x_0(x_t, \epsilon_\theta)  \xrightarrow {\text{ 公式 }(7)}\mu(x_t, \hat x_0),\beta_t\xrightarrow{sampling}x_{t-1}
+$$
+
+但其实这等价于：
+
+$$
+x_t\xrightarrow{\text{ 公式 } (8)} x_{t-1}
+$$
+
+  **经过测试，将 `p_sample` 部分的代码换成上面这个公式后，采样生成图片的结果是一样的。**  
+
+模型方面 DDPM 采用了 UNET 作为 backbone，在传播过程中加入了三角函数位置编码，用于传递采样步骤 $t$ 的信息。在训练过程中，图像的像素被缩放到了 `[-1, 1]` 的区间进行模型学习，在预测编码的时候映射回到 `[0, 255]`。
+
+此外论文中的 UNET 还加入了 attention 等操作，能够提高打榜分数，但如果采用基础的自编码器效果也是够好的。
+
+### 训练过程
+
+根据官方的代码，优化时直接对噪声进行优化，即：
+
+```python
+def train_losses(self, model, x_start, t):
+    noise = torch.randn_like(x_start)
+    x_noisy = self.q_sample(x_start, t, noise=noise)
+    predicted_noise = model(x_noisy, t)
+    loss = F.mse_loss(noise, predicted_noise)
+    # 部分网友提到此处使用 mse 可能导致 loss 太小，在低精度训练情况下，模型先收敛后发散
+    return loss
+
+```
+
+其中 $t$ 为时间步。在真实训练中并非对一张图片的 1000 个时间布都进行学习，而是随机选取时间步：
+
+```python
+for epoch in range(epochs):
+    for step, (images, labels) in enumerate(train_loader):
+        optimizer.zero_grad()
+        
+        batch_size = images.shape[0]
+        images = images.to(device)
+        
+        # sample t uniformally for every example in the batch
+        t = torch.randint(0, timesteps, (batch_size,), device=device).long()
+        
+        loss = gaussian_diffusion.train_losses(model, images, t)
+        
+        if step % 200 == 0:
+            print("Loss:", loss.item())
+            
+        loss.backward()
+        optimizer.step()
+```
+
+
+
+## 参考
+
+[科学空间 - 生成扩散模型漫谈系列博客](https://spaces.ac.cn/search/%E7%94%9F%E6%88%90%E6%89%A9%E6%95%A3%E6%A8%A1%E5%9E%8B/)
+
+[扩散模型之 DDPM](https://zhuanlan.zhihu.com/p/563661713)

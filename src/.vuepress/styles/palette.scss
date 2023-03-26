@@ -1,0 +1,20 @@
+// you can change colors here
+$theme-color: #096dd9;
+$content-width: 46rem;
+$sidebar-width: 17rem;
+$font-family: '"Noto Serif SC"';
+
+.timeline-wrapper .timeline-item {
+    padding: 10px 0 6px;
+}
+.timeline-wrapper .timeline-title {
+    font-size: 16px
+}
+
+.sidebar-sub-headers .sidebar-link.active {
+    background: var(--theme-color-mask);
+}
+.menu-page {
+    margin: 0 auto;
+    max-width: 780px 
+}
