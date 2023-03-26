@@ -5,9 +5,11 @@
            
           <main class="menu-page">
             <el-input
+              maxlength="100"
               v-model="input"
               placeholder="Please input"
               class="input-with-select"
+              show-word-limit
             >
               <template #prepend>
                 <el-select v-model="select" placeholder="Select" style="width: 115px">

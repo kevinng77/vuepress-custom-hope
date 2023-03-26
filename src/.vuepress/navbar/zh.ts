@@ -9,5 +9,6 @@ export const zhNavbar = navbar([
     prefix: "/posts/" ,
   children:[{ text: "知识笔记", icon: "note", link: "notes/" },
   { text: "泉州忆往昔", icon: "like", link: "hometown/" }]},
-  { text: "归档", icon: "categoryselected", link: "/timeline/"}
+  { text: "归档", icon: "categoryselected", link: "/timeline/"},
+  {text:"知识检索", icon: "search", link:"/search"}
 ]);
