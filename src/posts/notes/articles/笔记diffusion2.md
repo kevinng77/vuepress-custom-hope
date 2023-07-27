@@ -7,9 +7,7 @@ category:
 tag:
 - CV
 - Diffusion
-mathjax: true
-toc: true
-comments: 笔记
+- AIGC
 ---
 
 ### DIFFUSION 系列笔记|DDIM 数学、思考与 ppdiffuser 代码探索

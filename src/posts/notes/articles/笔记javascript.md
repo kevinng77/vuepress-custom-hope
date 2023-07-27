@@ -223,6 +223,17 @@ let noob = new Runoob("菜鸟教程", 5);
 document.getElementById("demo").innerHTML = noob.show();
 ```
 
+### promise 对象
+
+使用 `fetch` 等异步函数 （`async function(){}`） 后，会返回一个 promise 对象。 promise 对象可以使用 `.then()` 或者 `.catch()` 等，来对对象本身进行进一步操作。
+
+```js
+fetch(url).then(
+resp=>resp.json()).catch(...)
+```
+
+值得注意的是，promise 对象使用 `.then` 或者 `.catch` 之后，返回的还是一个 `promise` 对象。但我们可以在 `.then`， `.catch` 中对 promise 中储存的 PromiseResult 进行处理。
+
 ## 操作 BOM
 
 +  **window** 

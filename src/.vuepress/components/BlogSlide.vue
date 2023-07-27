@@ -1,5 +1,5 @@
 <template>
-      <el-carousel class="slide" :height="data.slideHeight">
+      <el-carousel class="slide" :height="data.slideHeight" :interval="5000">
         <el-carousel-item  v-for="item in data.slides" :key="item">
           <el-image class="slide-img" fit='cover' 
           style="width: 100%; height: 100%" :src="item.url"  alt="" />

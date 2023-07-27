@@ -19,9 +19,9 @@ projects:
     link: /category/知识笔记/
 
   - icon: link
-    name: 嵌入式学习
-    desc: 一些非常基础的嵌入式学习网课笔记
-    link: /tag/嵌入式学习/
+    name: AIGC
+    desc: AI Agent，LLM，AI 绘画，对话机器人等。
+    link: /tag/AIGC/
 
 slides:
   - name: 忆往昔
@@ -33,7 +33,7 @@ slides:
   - name: 理论梳理
     desc: 
       - 知识笔记、经验分享
-      - 内容包括编程语言、嵌入式物联网、人工智能、前端设计、大数据等
+      - 内容包括 AIGC、编程语言、嵌入式物联网、人工智能、前端设计、大数据等
     link: /posts/notes
     url: /assets/homesea.jpg
 

@@ -6,6 +6,7 @@ category:
 - 知识笔记
 tag:
 - NLP
+- AIGC
 ---
 
 # Instruction Tuning 时代的模型笔记
@@ -29,7 +30,7 @@ LaMDA 没用到 Instrcution Tuning，但下文中部分模型基于 LaMDA 进行
 1. 假设用户进行 query，LaMDA 会进行一次普通预测，返回一个可能存在事实错误的答案，该答案通过 prompt 拼接，传入到 LaMDA-Research 模块当中。
 2. Research 模块可以看作一个修正答案回复的模块，是基于 multi-task finetune 而来的，比如信息安全、对话质量等任务。该模型能够生成两种类型的回复，一种由 TS 开头，表示当前的 prompt 需要进行 TS 工具来优化回复。第二种由 USER 开头，表示当前回复可以给用户看了。ReSearch 模块是一个循环迭代过程。
 
-![example](https://pic1.zhimg.com/80/v2-6f7bf251f2d04774478fd35669c49230_1440w.png)
+![模块示例图](https://pic1.zhimg.com/80/v2-6f7bf251f2d04774478fd35669c49230_1440w.png)
 
 
 
