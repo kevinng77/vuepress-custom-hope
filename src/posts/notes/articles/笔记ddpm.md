@@ -7,6 +7,7 @@ category:
 tag:
 - CV
 - Diffusion
+- AIGC
 mathjax: true
 toc: true
 comments: 笔记

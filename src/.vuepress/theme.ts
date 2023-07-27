@@ -12,6 +12,7 @@ export default hopeTheme({
   
   iconAssets: "iconfont",
   darkmode: "disabled",
+  backToTop: false,
   logo: "/logo.svg",
   favicon: "/logo.svg",
   sidebarSorter: ["date-desc", "readme", "order", "title", "filename"],
@@ -49,7 +50,7 @@ export default hopeTheme({
       // Rss: "https://example.com",
       // Steam: "https://example.com",
       // Twitter: "https://example.com",
-      // Wechat: "https://example.com",
+      Wechat: "intro",
       // Weibo: "https://example.com",
       // Whatsapp: "https://example.com",
       // Youtube: "https://example.com",
@@ -71,7 +72,6 @@ export default hopeTheme({
     "/": {
       // navbar
       navbar: zhNavbar,
-
       // sidebar
       sidebar: zhSidebar,
 

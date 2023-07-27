@@ -2,6 +2,8 @@
 title: Vue 及 Vuepress 基础
 date: 2023-01-20
 author: Kevin 吴嘉文
+tag:
+- webfront
 category:
 - 知识笔记
 ---
@@ -850,10 +852,13 @@ module.exports = {
 
 [vuepress hope](https://theme-hope.vuejs.press/zh/)
 
-缺少对应包时，自己安装即可。 **遇到问题一定要多看官方文档！！！！** 
+缺少对应包时，自己安装即可。 **遇到问题一定要多看官方文档！！！！**  多查看 [常见文档错误](https://vuepress-theme-hope.github.io/v2/zh/faq/common-error.html#vue-warn-failed-to-resolve-component-xxx)
 
 ```sh
-pnpm add -D @vuepress/utils@2.0.0-beta.60
+pnpm add -D element-plus
+pnpm add -D axios
+pnpm add -D vuepress-plugin-search-pro
+pnpm add -D @vuepress/utils@2.0.0-beta.61
 pnpm add -D vuepress-shared
 ```
 
@@ -1210,5 +1215,4 @@ const c = ref({})
 const d = ref(false)
 const e = ref([])
 ```
-
 
