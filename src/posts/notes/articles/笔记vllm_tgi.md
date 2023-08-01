@@ -93,7 +93,7 @@ git clone https://github.com/vllm-project/vllm.git
 docker run -it  --runtime=nvidia --gpus=all --net=host --name=vllm -v ./vllm:/workspace/vllm kevinng77/vllm /bin/bash
 ```
 
-\2. 启动模型服务
+2. 启动模型服务
 
 我们使用 LLaMa v2 进行测试部署：
 
@@ -173,7 +173,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 apt-get install cargo  pkg-config git
 ```
 
-\2. 下载 protoc
+2. 下载 protoc
 
 ```bash
 PROTOC_ZIP=protoc-21.12-linux-x86_64.zip
@@ -183,7 +183,7 @@ sudo unzip -o $PROTOC_ZIP -d /usr/local 'include/*'
 rm -f $PROTOC_ZIP
 ```
 
-\3. 如果没有网络加速的话，建议修改 cargo 源。有网络加速可略过。
+3. 如果没有网络加速的话，建议修改 cargo 源。有网络加速可略过。
 
 ```bash
 # vim ~/.cargo/config
@@ -199,15 +199,15 @@ registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git"
 git-fetch-with-cli=true
 ```
 
-\4. TGI 根目录下执行安装：
+4. TGI 根目录下执行安装：
 
 ```bash
 BUILD_EXTENSIONS=True make install # Install repository and HF/transformer fork with CUDA kernels
 ```
 
-\5. 安装成功，添加环境变量到 .bashrc 中 export PATH=/root/.cargo/bin:$PATH
+5. 安装成功，添加环境变量到 .bashrc 中 export PATH=/root/.cargo/bin:$PATH
 
-\6. 执行 text-generation-launcher --help ，有输出表示安装成功。
+6. 执行 text-generation-launcher --help ，有输出表示安装成功。
 
 ###  **快速开始** 
 
@@ -328,4 +328,10 @@ Kevin 吴嘉文：LLaMa 量化部署 20 赞同 · 5 评论文章
 | vllm    | 8          | 432      |
 
 因此采用 TGI + GPTQ 的吞吐量可能不会有很大提升。目前 TGI 对 exllama 的支持还不是很好，等过段时间再来测试 TGI + exllama 的吞吐量。
+
+### 运行 gptq 测试
+
+```bash
+docker run --rm --name tgi -e GPTQ_BITS=4 -e GPTQ_GROUPSIZE=128 --runtime=nvidia --gpus all -p 5001:5001 -v /home/kevin/models:/data kevinng77/tgi --model-id /data/llama2-7b-chat-gptq-int4 --hostname 0.0.0.0 --port 5001 --max-concurrent-requests 256  --quantize gptq --trust-remote-code --max-batch-prefill-tokens 2048 --sharded false --max-input-length 1024 --max-batch-total-tokens 30000 
+```
 

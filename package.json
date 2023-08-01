@@ -19,8 +19,13 @@
     "vuepress-theme-hope": "2.0.0-beta.198"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
     "@vuepress/utils": "2.0.0-beta.61",
     "element-plus": "^2.3.1",
-    "vuepress-plugin-search-pro": "2.0.0-beta.198"
+    "highlight.js": "^11.8.0",
+    "marked": "^6.0.0",
+    "marked-highlight": "^2.0.1",
+    "vuepress-plugin-search-pro": "2.0.0-beta.198",
+    "vuex": "^4.1.0"
   }
 }

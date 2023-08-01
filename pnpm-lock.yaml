@@ -1,20 +1,30 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@element-plus/icons-vue': ^2.1.0
   '@vuepress/client': 2.0.0-beta.61
   '@vuepress/utils': 2.0.0-beta.61
   axios: ^1.3.4
   element-plus: ^2.3.1
+  highlight.js: ^11.8.0
+  marked: ^6.0.0
+  marked-highlight: ^2.0.1
   vue: ^3.2.47
   vuepress: 2.0.0-beta.61
   vuepress-plugin-search-pro: 2.0.0-beta.198
   vuepress-shared: 2.0.0-beta.198
   vuepress-theme-hope: 2.0.0-beta.198
+  vuex: ^4.1.0
 
 dependencies:
+  '@element-plus/icons-vue': 2.1.0_vue@3.2.47
   '@vuepress/utils': 2.0.0-beta.61
   element-plus: 2.3.1_vue@3.2.47
+  highlight.js: 11.8.0
+  marked: 6.0.0
+  marked-highlight: 2.0.1_marked@6.0.0
   vuepress-plugin-search-pro: 2.0.0-beta.198_o3fvas3urmvxroffdjq3xemrzq
+  vuex: 4.1.0_vue@3.2.47
 
 devDependencies:
   '@vuepress/client': 2.0.0-beta.61
@@ -3598,6 +3608,11 @@ packages:
     resolution: {integrity: sha512-2bsegYkkHO+h/9MGbn6KWcE45cHZgPANo5LXF7EvWdT0yT2EguSVO1nDgU5c8+ZOPwp2vMNa7YFsJhVcDR9Sdg==}
     dev: true
 
+  /highlight.js/11.8.0:
+    resolution: {integrity: sha512-MedQhoqVdr0U6SSnWPzfiadUcDHfN/Wzq25AkXiQv9oiOO/sG0S7XkvpFIqWBl9Yq1UYyYOOVORs5UW2XlPyzg==}
+    engines: {node: '>=12.0.0'}
+    dev: false
+
   /hls.js/1.3.5:
     resolution: {integrity: sha512-uybAvKS6uDe0MnWNEPnO0krWVr+8m2R0hJ/viql8H3MVK+itq8gGQuIYoFHL3rECkIpNH98Lw8YuuWMKZxp3Ew==}
     dev: true
@@ -4079,11 +4094,25 @@ packages:
       mdurl: 1.0.1
       uc.micro: 1.0.6
 
+  /marked-highlight/2.0.1_marked@6.0.0:
+    resolution: {integrity: sha512-LDUfR/zDvD+dJ+lQOWHkxvBLNxiXcaN8pBtwJ/i4pI0bkDC/Ef6Mz1qUrAuHXfnpdr2rabdMpVFhqFuU+5Mskg==}
+    peerDependencies:
+      marked: ^4 || ^5
+    dependencies:
+      marked: 6.0.0
+    dev: false
+
   /marked/4.3.0:
     resolution: {integrity: sha512-PRsaiG84bK+AMvxziE/lCFss8juXjNaWzVbN5tXAm4XjeaS9NAHhop+PjQxz2A9h8Q4M/xGmzP8vqNwy6JeK0A==}
     engines: {node: '>= 12'}
     hasBin: true
     dev: true
+
+  /marked/6.0.0:
+    resolution: {integrity: sha512-7E3m/xIlymrFL5gWswIT4CheIE3fDeh51NV09M4x8iOc7NDYlyERcQMLAIHcSlrvwliwbPQ4OGD+MpPSYiQcqw==}
+    engines: {node: '>= 16'}
+    hasBin: true
+    dev: false
 
   /mathjax-full/3.2.2:
     resolution: {integrity: sha512-+LfG9Fik+OuI8SLwsiR02IVdjcnRCy5MufYLi0C3TdMT56L/pjB0alMVGgoWJF8pN9Rc7FESycZB9BMNWIid5w==}
@@ -5864,6 +5893,15 @@ packages:
       - terser
       - ts-node
       - vue
+
+  /vuex/4.1.0_vue@3.2.47:
+    resolution: {integrity: sha512-hmV6UerDrPcgbSy9ORAtNXDr9M4wlNP4pEFKye4ujJF8oqgFFuxDCdOLS3eNoRTtq5O3hoBDh9Doj1bQMYHRbQ==}
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@vue/devtools-api': 6.5.0
+      vue: 3.2.47
+    dev: false
 
   /wcwidth/1.0.1:
     resolution: {integrity: sha512-XHPEwS0q6TaxcvG85+8EYkbiCux2XtWG2mkc47Ng2A77BQu9+DqIOJldST4HgPkuea7dvKSj5VgX3P1d4rW8Tg==}

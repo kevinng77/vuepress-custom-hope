@@ -1,4 +1,7 @@
 // place your custom styles here
 pre code {
-    background: transparent !important;
+    background: transparent;
+}
+.el-card {
+    --el-card-border-radius:.5rem
 }
