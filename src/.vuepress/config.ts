@@ -2,12 +2,6 @@ import { defineUserConfig } from "vuepress";
 import theme from "./theme.js";
 import { getDirname, path } from "@vuepress/utils";
 const __dirname = getDirname(import.meta.url);
-// import { searchProPlugin } from "vuepress-plugin-search-pro";
-
-// import AutoImport from 'unplugin-auto-import/vite'
-// import Components from 'unplugin-vue-components/vite'
-// import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-// import ElementPlus from 'unplugin-element-plus/vite'
 
 
 export default defineUserConfig({
@@ -76,5 +70,5 @@ export default defineUserConfig({
 
 
   },
-  shouldPrefetch: false,
+  shouldPrefetch: false
 });

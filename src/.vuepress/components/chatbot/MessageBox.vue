@@ -11,7 +11,7 @@
                 <el-col :span="16">
                     <el-card 
                         :class="`message-card ${message.user==='bot'?'bot-message':'human-message'}`" 
-                        shadow="hover"
+                        shadow="always"
                         body-style="padding: .3rem 1rem; border-radius: 5rem;" 
                         >
                       <MessageMarkdown :raw="message.content" />  

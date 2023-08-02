@@ -4,14 +4,14 @@
         @click="triggerBot" size='large' circle />
         <Teleport to="body">
             <Transition  name="slide-fade">
-                <div v-if="open" class="chat-window">
+                <div v-if="open" class="chat-window" >
+                    <div class="mask" @click="triggerBot"></div>
                     <ChatbotWindowVue />
                 </div>
             </Transition>
         </Teleport>
 
     </div>
-
 </template>
 
 
@@ -56,7 +56,14 @@ export default {
     height: 100%;
     top: 0;
     position: fixed;
-    background-color: rgba(232, 232, 232, 0.95);
+}
+
+.mask {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    position: fixed;
+    background-color: rgb(9 10 17 / 80%);
 }
 
 .slide-fade-enter-active {

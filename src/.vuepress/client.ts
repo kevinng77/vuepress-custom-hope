@@ -19,4 +19,5 @@ export default defineClientConfig({
     app.use(store);
 ;
   },
+  rootComponents: [ChatbotButton]
 });

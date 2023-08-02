@@ -25,15 +25,6 @@
     "@element-plus/icons-vue": "^2.1.0",
     "highlight.js": "^11.8.0",
     "marked-highlight": "^2.0.1",
-    "package-lock.json": "^1.0.0",
-    "vuepress-plugin-auto-catalog": "2.0.0-beta.198",
-    "vuepress-plugin-comment2": "2.0.0-beta.198",
-    "vuepress-plugin-components": "2.0.0-beta.198",
-    "vuepress-plugin-copy-code2": "2.0.0-beta.198",
-    "vuepress-plugin-copyright2": "2.0.0-beta.198",
-    "vuepress-plugin-feed2": "2.0.0-beta.198",
-    "vuepress-plugin-md-enhance": "2.0.0-beta.198",
-    "vuepress-plugin-photo-swipe": "2.0.0-beta.198",
     "vuex": "^4.1.0"
   }
 }

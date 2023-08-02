@@ -116,3 +116,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.input-box {
+    box-shadow: var(--el-box-shadow-light)
+}
+</style>
