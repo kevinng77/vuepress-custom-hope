@@ -13,7 +13,7 @@ export default defineComponent({
     setup() {
         const articles = useArticles();
         return () => h("div", { class: "page blog" }, [
-            h(BlogSlide),
+            // h(BlogSlide),
             h(ChatbotButton),
             h("div", { class: "blog-page-wrapper" }, [
                 h("main", { class: "blog-home", id: "main-content" }, [

@@ -9,20 +9,14 @@
       </el-carousel>
 </template>
 
-<script>
-// import { ElCarousel, ElCarouselItem, ElImage } from 'element-plus'
-
-export default ({
-  // components: {
-  //   ElCarousel, ElCarouselItem, ElImage 
-  // },
+<script >
+export default {
   computed: {
     data () {
       return this.$page.frontmatter
     },
   }
-
-})
+}
 
 </script>
 
