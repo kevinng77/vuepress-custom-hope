@@ -33,8 +33,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-// import { ElCarousel, ElCarouselItem, ElImage } from 'element-plus'
-import BreadCrumb from "@theme-hope/components/BreadCrumb"
+import BreadCrumb from "@theme-hope/components/BreadCrumb";
 import PageTitle from "@theme-hope/components/PageTitle"
 import PageMeta from "@theme-hope/modules/info/components/PageMeta"
 import axios from 'axios'

@@ -47,14 +47,16 @@ export default {
     position: fixed;
     bottom: 2rem;
     right: 2rem;
-    z-index: 99999999999;
+    z-index: 999;
 }
 
 .chat-window {
     width: 100%;
-    z-index: 99999999999;
+    z-index: 998;
+    height: 100%;
     top: 0;
     position: fixed;
+    background-color: rgba(232, 232, 232, 0.95);
 }
 
 .slide-fade-enter-active {
