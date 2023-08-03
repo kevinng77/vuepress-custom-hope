@@ -1,16 +1,11 @@
 <template>
     <div class="chatbot-button">
         <el-button type="primary" :icon="ChatRound" 
-        @click="triggerBot" size='large' circle />
-        <Teleport to="body">
-            <Transition  name="slide-fade">
-                <div v-if="open" class="chat-window" >
-                    <div class="mask" @click="triggerBot"></div>
-                    <ChatbotWindowVue />
-                </div>
-            </Transition>
-        </Teleport>
-
+            @click="triggerBot" size='large' circle />
+        <el-dialog v-model="open" width="66%" :append-to-body=true top=2rem
+         :show-close=false draggable>
+            <ChatbotWindowVue />
+        </el-dialog>    
     </div>
 </template>
 
@@ -50,34 +45,16 @@ export default {
     z-index: 999;
 }
 
-.chat-window {
-    width: 100%;
-    z-index: 998;
-    height: 100%;
-    top: 0;
-    position: fixed;
+.el-dialog {
+    border-radius: 1rem;
 }
 
-.mask {
-    width: 100%;
-    height: 100%;
-    top: 0;
-    position: fixed;
-    background-color: rgb(9 10 17 / 80%);
+.el-dialog__header {
+    padding: 5px;
 }
 
-.slide-fade-enter-active {
-  transition: all 0.1s ease-out;
-}
-
-.slide-fade-leave-active {
-  transition: all 0.1s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateX(20px);
-  opacity: 0;
+.el-dialog__body {
+    padding: 0 0 1rem 0;
 }
 
 </style>

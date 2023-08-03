@@ -8,5 +8,13 @@ node:16.20.1
 npm install .
 ```
 
+```bash
+npm run docs:dev
+```
 
+## 部署
+
+```bash
+npm run docs:build
+```
 
