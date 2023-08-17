@@ -1,10 +1,10 @@
 import { hopeTheme } from "vuepress-theme-hope";
 import { zhNavbar } from "./navbar/index.js";
-import { zhSidebar } from "./sidebar/index.js";
+// import { zhSidebar } from "./sidebar/index.js";
 
 export default hopeTheme({
   hostname: "http://wujiawen.xyz",
-
+  toc: true,
   author: {
     name: "吴嘉文 Kevin",
     url: "http://wujiawen.xyz",
@@ -13,9 +13,9 @@ export default hopeTheme({
   iconAssets: "iconfont",
   darkmode: "disabled",
   backToTop: false,
-  logo: "/logo.svg",
+  // logo: "/logo.svg",
   favicon: "/logo.svg",
-  sidebarSorter: ["date-desc", "readme", "order", "title", "filename"],
+  // sidebarSorter: ["date-desc", "readme", "order", "title", "filename"],
   // favicon: TODO,
   repo: "https://github.com/kevinng77", 
   // todo update blog repo address
@@ -73,7 +73,8 @@ export default hopeTheme({
       // navbar
       navbar: zhNavbar,
       // sidebar
-      sidebar: zhSidebar,
+      // sidebar: zhSidebar,
+      sidebar: false,
 
       footer: '<a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2020021116号</a>&nbsp;<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=" target="_blank"><img src="/assets/gongan.png">闽公网安备 35058102000231号 </a>',  //todo  添加备案信息
 

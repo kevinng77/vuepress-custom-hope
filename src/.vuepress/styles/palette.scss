@@ -1,7 +1,7 @@
 // you can change colors here
 $theme-color: #096dd9;
-$content-width: 46rem;
-$sidebar-width: 17rem;
+$content-width: 55%;
+// $sidebar-width: 17rem;
 $font-family: '"Noto Serif SC"';
 
 .timeline-wrapper .timeline-item {
@@ -18,3 +18,11 @@ $font-family: '"Noto Serif SC"';
     margin: 0 auto;
     max-width: 780px 
 }
+
+@media (min-width: 1280px){
+    .theme-container.no-sidebar.has-toc .page {
+        -webkit-padding-end: unset;
+        padding-inline-end: unset
+    }
+}
+
