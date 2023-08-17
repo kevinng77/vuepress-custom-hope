@@ -1,6 +1,6 @@
 // you can change colors here
 $theme-color: #096dd9;
-$content-width: 55%;
+$content-width: 46rem;
 // $sidebar-width: 17rem;
 $font-family: '"Noto Serif SC"';
 
@@ -26,3 +26,8 @@ $font-family: '"Noto Serif SC"';
     }
 }
 
+#toc {
+    left: unset;
+    right: calc(100% - .5rem);
+
+}

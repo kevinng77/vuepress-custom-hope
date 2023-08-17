@@ -1,4 +1,6 @@
-pnpm run docs:build
+echo "npm version check: 9.6.7?"
+echo `npm -v`
+npm run docs:build
 cp -r ./src/.vuepress/dist/* ~/test/dist/
 cd /home/kevin/test/dist
 echo `pwd`

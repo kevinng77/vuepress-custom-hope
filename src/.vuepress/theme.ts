@@ -5,6 +5,7 @@ import { zhNavbar } from "./navbar/index.js";
 export default hopeTheme({
   hostname: "http://wujiawen.xyz",
   toc: true,
+  print: false,
   author: {
     name: "吴嘉文 Kevin",
     url: "http://wujiawen.xyz",
@@ -18,8 +19,6 @@ export default hopeTheme({
   // sidebarSorter: ["date-desc", "readme", "order", "title", "filename"],
   // favicon: TODO,
   repo: "https://github.com/kevinng77", 
-  // todo update blog repo address
-
   docsDir: "docs",
 
   blog: {
