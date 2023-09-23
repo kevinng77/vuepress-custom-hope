@@ -179,7 +179,7 @@ compare_imgs(imgs, titles)  # 该函数在 notebook_utils.py 声明
 
 输出结果：
 
-![img](https://picx.zhimg.com/80/v2-76fda3366515a80051b347678909347b_1440w.png)
+![代码输出结果： DDPM 与 DDIM 采样下的图片对比](https://pic4.zhimg.com/80/v2-76fda3366515a80051b347678909347b_1440w.webp)
 
 通过运行以上代码，我们可以看出 $\eta=1$ 时， 默认配置下 DDPM 与 DDIM 采样结果有着明显的区别。但这并不意味着论文中的推导结论是错误的，差异可能源于以下两点：
 
@@ -215,7 +215,7 @@ compare_imgs(imgs, titles)
 
 可以验证得到 DDPM 与 DDIM 论文中提出的 $\eta=1$ 情况下的采样结果基本一致。
 
-![img](https://pic1.zhimg.com/80/v2-06cda6abf0f97ae1c9ffcc493cf6bf66_1440w.png)
+![img](https://pic3.zhimg.com/80/v2-06cda6abf0f97ae1c9ffcc493cf6bf66_1440w.webp)
 
 ### DDIM 加速采样
 
@@ -245,7 +245,7 @@ for i in range(len(etas)):
 plt.show()
 ```
 
-![img](https://picx.zhimg.com/80/v2-c058b4484c959bbdf12a6fe305a3f573_1440w.png)
+![img](https://pic4.zhimg.com/80/v2-c058b4484c959bbdf12a6fe305a3f573_1440w.webp =x350)
 
 通过论文中的示例说明，以及上述实现结果可以发现几点：
 
@@ -266,7 +266,7 @@ sample2 = pipe(num_inference_steps=50,eta=0,x_t=x_t)
 compare_imgs([sample1.images[0], sample2.images[0]], ["sample(seed 8)", "sample(seed 9)"])
 ```
 
-![img](https://picx.zhimg.com/80/v2-fe7b20b705cdd476d6c5cd59f15f8986_1440w.png)
+![DDIM 采样的确定性](https://pic3.zhimg.com/80/v2-fe7b20b705cdd476d6c5cd59f15f8986_1440w.webp =x300)
 
 #### 图像重建
 
@@ -316,7 +316,7 @@ $$
 
 以下我们尝试对自定义的输入图片进行反向采样（reverse sampling）和原图恢复，我们导入本地图片：
 
-![img](https://pic1.zhimg.com/80/v2-92ea37289088c4df5974f6f537d0aa90_1440w.png)
+![img](https://pic1.zhimg.com/80/v2-92ea37289088c4df5974f6f537d0aa90_1440w.webp =x300)
 
 根据公式 12 编写反向采样过程。ppdiffusers 中不存在 `reverse_sample` 方案，因此我们根据本文中的公式 $(12)$ 来实现一下 `reverse_sample` 过程，具体为：
 
@@ -345,7 +345,7 @@ def reverse_sample(self, model_output, x, t, prev_timestep):
 而后进行不断的迭代采样与图片重建（具体的方式可以查看 
 [扩散模型探索：DDIM 笔记与思考](https://aistudio.baidu.com/aistudio/projectdetail/5279888?sUid=902220&shared=1&ts=1673761297870)）。以下右图为根据原图进行反向 ODE 加噪后的结果，可以看出加噪后和电视没信号画面相当。以下左图为根据噪声图片采样得来的结果，基本上采样的结果还原了 90%以上原图的细节，不过还有如右上角部分的一些颜色没有被还原。
 
-![img](https://pica.zhimg.com/80/v2-14e30392cd4252f605c5e1ea5708ec70_1440w.png)
+![img](https://pic1.zhimg.com/80/v2-14e30392cd4252f605c5e1ea5708ec70_1440w.webp)
 
 ### 潜在的风格融合方式
 
@@ -365,7 +365,7 @@ compare_imgs([sample1.images[0], sample2.images[0]], ["sample from z_0", "sample
 
 输出结果：
 
-![img](https://picx.zhimg.com/80/v2-86060b348c0ad95e21475cc6419161b2_1440w.png)
+![img](https://pic3.zhimg.com/80/v2-86060b348c0ad95e21475cc6419161b2_1440w.webp =x300)
 
 以上选择 seed 为 77 和 2707 的噪声进行采样，他们的采样结果分别展示在上方。
 
@@ -386,7 +386,7 @@ def slerp(z1, z2, alpha):
     )
 ```
 
-![img](https://picx.zhimg.com/80/v2-2016518d1dcfee081cb8b154de1bb692_1440w.png)
+![img](https://pic3.zhimg.com/80/v2-2016518d1dcfee081cb8b154de1bb692_1440w.webp)
 
 可以看出，当 $\alpha$ 为 0.2， 0.8 时，我们能够看到以下融合的效果，如头发颜色，无关特征等。但在中间部分（$\alpha=0.4,0.5,0.6$），采样的图片质量就没有那么高了。
 

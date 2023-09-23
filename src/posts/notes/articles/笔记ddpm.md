@@ -36,7 +36,7 @@ comments: 笔记
 
 DDPM 的大致思想是：用 AI 构建一个模型，相比于一步到位生成图像，我们让这个模型每次生成一小步，经过 T 步后，图像就完成了。
 
-![img](https://pic1.zhimg.com/80/v2-0387c3ca424a7c3a9c72c7e5c2e2e03d_1440w.png?source=d16d100b)
+![img](https://pic2.zhimg.com/80/v2-0387c3ca424a7c3a9c72c7e5c2e2e03d_1440w.webp)
 
 如上图，给定原图片 $x_0$，DDPM 考虑每次在图像 $x_{t-1}$ 上加入噪声，得到图像 $x_t$，在经过多次加噪后，$x_t$ 就几乎变成了噪声。
 
@@ -502,7 +502,7 @@ for i in range(1,1000,50):
 plt.show()
 ```
 
-![image-20230816225157005](https://pic1.zhimg.com/80/v2-9bbb5b1bb04c27b0c9cb7a4916905ce6_1440w.png)
+![image-20230816225157005](https://pic3.zhimg.com/80/v2-9bbb5b1bb04c27b0c9cb7a4916905ce6_1440w.webp)
 
 接下来我们打印所有中间预测过的 $x_0$（参考本文公式 $(5)$），能够发现模型在一开始对 $x_0$ 仅停留在一个模糊的预测：比如颜色，大致位置，轮廓等。而后在面的过程中，对图片的一些细节才逐步有了刻画。
 
@@ -518,7 +518,7 @@ for i in range(1,1000,50):
 plt.show()
 ```
 
-![image-20230816225220451](https://picx.zhimg.com/80/v2-8fefe59ea7afbe74f38a0df6b2f93be7_1440w.png)
+![image-20230816225220451](https://pic4.zhimg.com/80/v2-8fefe59ea7afbe74f38a0df6b2f93be7_1440w.webp)
 
 验证将
 
