@@ -3,12 +3,12 @@ import { zhNavbar } from "./navbar/index.js";
 // import { zhSidebar } from "./sidebar/index.js";
 
 export default hopeTheme({
-  hostname: "http://wujiawen.xyz",
+  hostname: "http://antarina.tech/",
   toc: true,
   print: false,
   author: {
     name: "吴嘉文 Kevin",
-    url: "http://wujiawen.xyz",
+    url: "http://antarina.tech/",
   },
   
   iconAssets: "iconfont",
@@ -49,7 +49,7 @@ export default hopeTheme({
       // Rss: "https://example.com",
       // Steam: "https://example.com",
       // Twitter: "https://example.com",
-      Wechat: "intro",
+      Wechat: "/intro.html",
       // Weibo: "https://example.com",
       // Whatsapp: "https://example.com",
       // Youtube: "https://example.com",
@@ -75,7 +75,7 @@ export default hopeTheme({
       // sidebar: zhSidebar,
       sidebar: false,
 
-      footer: '<a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2020021116号</a>&nbsp;<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=" target="_blank"><img src="/assets/gongan.png">闽公网安备 35058102000231号 </a>',  //todo  添加备案信息
+      footer: '<a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备2023027904号-1</a>&nbsp;<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=" target="_blank"><img src="/assets/gongan.png">公安备案号 </a>',  //todo  添加备案信息
 
       displayFooter: true,
 

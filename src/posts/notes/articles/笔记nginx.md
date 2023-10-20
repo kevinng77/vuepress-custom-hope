@@ -1,6 +1,6 @@
 ---
 title: Nginx 简陋资源笔记
-date: 2023-08-27
+date: 2022-08-27
 author: Kevin 吴嘉文
 category:
 - 知识笔记
@@ -220,6 +220,70 @@ http {
 
 
 :::
+
+### Nginx HTTPS 配置
+
+### Let's Encrypt 免费 SSL
+
+Let's Encrypt 是一个由权威机构设置的计划，为网站用户提供免费的 SSL 证书。Let's Encrypt 证书是由非营利组织 Electronic Frontier Foundation（EFF）以及 Mozilla、Akamai、Cisco、IETF 等企业和组织提供支持，同时它也依托了 Linux 社区的合作。用户可以使用任何采用 Let's Encrypt 证书的网站而无需支付任何费用。Let's Encrypt 发行的数字证书有“DV SSL”和“OV SSL”两种类型。
+
+如果可以通过命令行方式，以 root 权限进入你的服务器时，推荐使用功能 [certbot](https://certbot.eff.org/instructions?ws=nginx&os=centosrhel8)。根据官方指南操作即可。
+
+或者可以使用  https://github.com/kevinng77/nginx-certbot/tree/master 一键部署。
+
+配置 `app.conf` 文件：
+
+```nginx
+server {
+    listen 80;
+    server_name wujiawen.xyz;
+    server_tokens off;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name wujiawen.xyz;
+    server_tokens off;
+
+    ssl_certificate /etc/letsencrypt/live/wujiawen.xyz/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/wujiawen.xyz/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    location / {
+        root /home/blog;
+        index  index.html index.htm;
+    }
+}
+```
+
+然后启动服务：
+
+```bash
+docker compose up -d
+```
+
+[参考文章](https://pentacent.medium.com/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71)
+
+### 其他免费 ssl 证书
+
+Cloudflare
+
+Cloudflare 是另一个可提供免费 SSL 证书的公司，他们是一家全球性的提供缓存和 DNS 技术的公司。Cloudflare 提供的 SSL 证书包括“Flexible SSL”、“Full SSL”、“Full SSL Strict”三种类型。CloudFlare 还提供“Always Use HTTPS”选项，将网站访问升级到 HTTPS。
+
+SSLForFree
+
+SSLForFree 是一个提供免费 SSL 证书的网站。用户可以在这里获取有效的数字证书。“SSLForFree”支持 RapidSSL, GeoTrust 和 Comodo 域名验证证书，用户只需要验证域名所有权，即可获得 SSL 证书的使用权。
+
+
 
 ## 资料
 
