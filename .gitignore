@@ -4,3 +4,4 @@ src/.vuepress/.cache/
 src/.vuepress/.temp/
 src/.vuepress/dist/
 __pycache__
+cleaned_post

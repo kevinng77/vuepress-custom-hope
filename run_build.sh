@@ -1,10 +1,60 @@
+#!/bin/bash
+#  the script will now exit immediately if any of the commands fail.
+set -e
+
 export NODE_OPTIONS="--max-old-space-size=8192"
-echo "npm version check: 9.6.7?"
-echo `npm -v`
+
+cd "$(dirname "$0")"
+echo -e "\033[35m >>> 脚本执行路径： `pwd` \033[0m"
+
+temp_blog_path="./cleaned_post"
+source_blog_path="/home/kevin/nut/post/"
+blog_public_folder_path="/home/kevin/test/blog/src/.vuepress/public"
+blog_output_folder_path="/home/kevin/test/blog/src/posts"
+dist_git_folder_path="/home/kevin/test/dist/"  # dist git 文件夹博客文件所在路径
+dist_source_folder_path="/home/kevin/test/blog/src/.vuepress/dist"
+
+echo -e "\033[36m >>> Switching to github branch..... \033[0m"
+
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+# Check if the current branch is "github"
+if [ "$current_branch" != "github" ]; then
+    git checkout github
+else
+    echo -e "Already on github branch"
+fi
+
+nvm_version=$(npm -v)
+if [ "$nvm_version" != "9.6.7" ]; then
+    nvm use 18
+else
+    echo -e "Already on nvm 18"
+fi
+echo -e "\033[36m >>> 开始格式化博客文件 \033[0m"
+
+python codecorrect/vuepress_formating.py \
+    --source_blog_path=$source_blog_path \
+    --output_blog_path=$temp_blog_path \
+    --days=7 \
+    --blog_public_folder_path=$blog_public_folder_path
+
+echo -e "\033[36m >>> 转移格式化后的博客文件 \033[0m"
+echo -e "执行 cp -r $temp_blog_path/notes/articles/* $blog_output_folder_path/notes/articles/"
+
+cp -r $temp_blog_path/notes/articles/* $blog_output_folder_path/notes/articles/
+
+
+echo -e "\033[36m >>> 开始构建 dist 博客文件 \033[0m"
+
 npm run docs:build
-cp -r ./src/.vuepress/dist/* ~/test/dist/
+
+echo -e "\033[36m >>> 转移构建好的博客 dist 网页 \033[0m"
+echo -e "执行 cp -r $dist_source_folder_path/* $dist_git_folder_path"
+
+cp -r $dist_source_folder_path/* $dist_git_folder_path
 cd /home/kevin/test/dist
-echo `pwd`
+
+echo -e "\033[36m >>> Push 到服务器 \033[0m"
 git add .
 git commit -m "add blog"
 git push
