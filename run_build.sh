@@ -7,6 +7,7 @@ export NODE_OPTIONS="--max-old-space-size=8192"
 cd "$(dirname "$0")"
 echo -e "\033[35m >>> 脚本执行路径： `pwd` \033[0m"
 
+git_branch="master"
 temp_blog_path="./cleaned_post"
 source_blog_path="/home/kevin/nut/post/"
 blog_public_folder_path="/home/kevin/test/blog/src/.vuepress/public"
@@ -14,14 +15,14 @@ blog_output_folder_path="/home/kevin/test/blog/src/posts"
 dist_git_folder_path="/home/kevin/test/dist/"  # dist git 文件夹博客文件所在路径
 dist_source_folder_path="/home/kevin/test/blog/src/.vuepress/dist"
 
-echo -e "\033[36m >>> Switching to github branch..... \033[0m"
+echo -e "\033[36m >>> Switching to master branch..... \033[0m"
 
 current_branch=$(git rev-parse --abbrev-ref HEAD)
 # Check if the current branch is "github"
-if [ "$current_branch" != "github" ]; then
-    git checkout github
+if [ "$current_branch" != "$git_branch" ]; then
+    git checkout $git_branch
 else
-    echo -e "Already on github branch"
+    echo -e "Already on $git_branch branch"
 fi
 
 nvm_version=$(npm -v)
@@ -57,5 +58,7 @@ cd /home/kevin/test/dist
 echo -e "\033[36m >>> Push 到服务器 \033[0m"
 git add .
 git commit -m "add blog"
+echo -e "\033[36m >>> Push 到 github 服务器 \033[0m"
 git push
+echo -e "\033[36m >>> Push 到腾云服务器 \033[0m"
 git push kmtencent

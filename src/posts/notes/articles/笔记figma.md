@@ -154,3 +154,42 @@ Design 中可以设置 constraints，来对不同尺寸的页面进行大小配�
 
 以上设置，不论页面多大，该元素总是居中。Constraints 也可以设置 scale 等其他方案。
 
+# Figma2Code
+
+## flex 布局
+
+CSS 中 Flex 布局与 figma 中 autolayout 相似。可以根据方向等提供灵活布局。参数包括
+
+- `flex-direction`：默认为`row`，从左往右布局。`row-reverse`（右往左），`column`/`column-reverse`，垂直布局。
+- `flex-wrap`：默认`nowrap`不换行。`wrap`，换行。`wrap-reverse`：换行但第一行在最下面。
+- `flex-flow`：以上两者的缩写，可以写成如 `row nowrap`
+- `justify-content`: `flex-start` 左对齐, `flex-end` 右对齐, `center`, `space-between` 两端对齐，item 之间的间隔相等, `space-around` ，item 两侧的间隔相同。
+- `align-items` （单根轴线）： `flex-start` , `flex-end`, `center`（分别根据轴线起点、终点、中心对齐）, `baseline`, `stretch`(默认值，将 item 的高度配置为容器高度)
+- `align-content` （多跟轴线）：相对于 `align-items`，对了 `space-between`, `space-around`
+
+Figma 中 auto layout 中的一些选项可以直接对应到 flex 设置中，使用官方的 dev 工具时，采用 autolayout 设置后，可直接生成对应的 flex css 代码。
+
+flex 中 item 的 css 属性：
+
+- `order`: 项目排列顺序，0 排最前面
+- `flex-grow`：默认为 0，如果存在空间也不放大。
+- `flex-shrink`：默认为 1，如果空间不够，就缩小。
+- `flex-basis`：？？？
+- `flex`：前三者的缩写，如 `0 1 auto`
+- `align-self`：改变这个 item 在容器中的对齐方式，不影响其他 item
+
+autolayout 容器布局
+
+```css
+display: flex;
+width: 24.375rem;
+padding: 0rem 1.0625rem;
+justify-content: center;
+align-items: center;
+gap: 1.3125rem;
+```
+
+
+
+
+
