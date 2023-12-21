@@ -1,13 +1,14 @@
 import { hopeTheme } from "vuepress-theme-hope";
 import { zhNavbar } from "./navbar/index.js";
-import { zhSidebar } from "./sidebar/index.js";
+// import { zhSidebar } from "./sidebar/index.js";
 
 export default hopeTheme({
-  hostname: "http://wujiawen.xyz",
-
+  hostname: "http://antarina.tech/",
+  toc: true,
+  print: false,
   author: {
     name: "吴嘉文 Kevin",
-    url: "http://wujiawen.xyz",
+    url: "http://antarina.tech/",
   },
   
   iconAssets: "iconfont",
@@ -15,11 +16,9 @@ export default hopeTheme({
   backToTop: false,
   // logo: "/logo.svg",
   favicon: "/logo.svg",
-  sidebarSorter: ["date-desc", "readme", "order", "title", "filename"],
+  // sidebarSorter: ["date-desc", "readme", "order", "title", "filename"],
   // favicon: TODO,
   repo: "https://github.com/kevinng77", 
-  // todo update blog repo address
-
   docsDir: "docs",
 
   blog: {
@@ -73,9 +72,10 @@ export default hopeTheme({
       // navbar
       navbar: zhNavbar,
       // sidebar
-      sidebar: zhSidebar,
+      // sidebar: zhSidebar,
+      sidebar: false,
 
-      footer: '<a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2020021116号</a>&nbsp;<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=" target="_blank"><img src="/assets/gongan.png">闽公网安备 35058102000231号 </a>',  //todo  添加备案信息
+      footer: '<a href="https://beian.miit.gov.cn/" target="_blank">沪ICP备2023027904号-1</a>&nbsp;<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=" target="_blank"><img src="/assets/gongan.png">公安备案号 </a>',  //todo  添加备案信息
 
       displayFooter: true,
 
@@ -120,7 +120,7 @@ export default hopeTheme({
       chart: true,
       codetabs: true,  // 是否启用代码组。
       container: true,  // 是否支持如details 等容器
-      // linkCheck: "dev" , // 是否启用链接检查。
+      checkLinks: {status:"always"} , // 是否启用链接检查。
       // demo: true, // 是否启用代码案例支持
       echarts: true,
       figure: true,
@@ -136,9 +136,8 @@ export default hopeTheme({
       playground: {
         presets: ["ts", "vue"],
       },
-      presentation: {
-        plugins: ["highlight", "math", "search", "notes", "zoom"],
-      },
+      presentation: ["highlight", "math", "search", "notes", "zoom"],
+      
       // stylize: [
       //   {
       //     matcher: "Recommended",
@@ -158,9 +157,11 @@ export default hopeTheme({
       // vPre: true,  // 是否启用 v-pre 容器。
       // vuePlayground: true,
     },
-    prismjs:{
-      light: 'ghcolors'
-    },
+    prismjs: false,
+    // prismjs:{
+    //   light: 'atom-dark'
+    // },
+
     components:{
       components:[
         "BiliBili",

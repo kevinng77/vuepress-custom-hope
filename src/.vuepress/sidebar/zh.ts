@@ -22,14 +22,6 @@ export const zhSidebar = sidebar({
       link: "intro/"
     },
 
-  ],
-  "/demo/":[
-    {
-      text: "文章",
-      icon: "note",
-      prefix: "ai/",
-      children: "structure",
-    }
   ]
   ,
   "/posts/hometown/":[

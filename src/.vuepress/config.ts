@@ -2,7 +2,9 @@ import { defineUserConfig } from "vuepress";
 import theme from "./theme.js";
 import { getDirname, path } from "@vuepress/utils";
 const __dirname = getDirname(import.meta.url);
-// import { searchProPlugin } from "vuepress-plugin-search-pro";
+import { searchProPlugin } from "vuepress-plugin-search-pro";
+// import { docsearchPlugin } from '@vuepress/plugin-docsearch'
+import { shikiPlugin } from "@vuepress/plugin-shiki";
 
 // import AutoImport from 'unplugin-auto-import/vite'
 // import Components from 'unplugin-vue-components/vite'
@@ -36,6 +38,9 @@ export default defineUserConfig({
     ],
   ],
   plugins:[
+    // docsearchPlugin({
+    //   // options
+    // }),
     // ElementPlus(),
     // AutoImport({
     //   resolvers: [ElementPlusResolver()],
@@ -43,25 +48,30 @@ export default defineUserConfig({
     // Components({
     //   resolvers: [ElementPlusResolver()],
     // }),
-    // searchProPlugin({
-    //   indexContent: true,
-    //   customFields: [
-    //     {
-    //       name: "category",
-    //       getter: (page) => page.frontmatter.category ?? [],
-    //       formatter: {
-    //         "/": "分类：$content",
-    //       },
-    //     },
-    //     {
-    //       name: "tag",
-    //       getter: (page) => page.frontmatter.tag ?? [],
-    //       formatter: {
-    //         "/": "标签：$content",
-    //       },
-    //     },
-    //   ],
-    // }),
+    shikiPlugin({
+      // 你的选项
+      theme: "github-light",
+    }),
+    searchProPlugin({
+      indexContent: true,
+      autoSuggestions: false,
+      customFields: [
+        {
+          name: "category",
+          getter: (page) => page.frontmatter.category ?? [],
+          formatter: {
+            "/": "分类：$content",
+          },
+        },
+        {
+          name: "tag",
+          getter: (page) => page.frontmatter.tag ?? [],
+          formatter: {
+            "/": "标签：$content",
+          },
+        },
+      ],
+    }),
   ],
   theme,
   alias: {
@@ -69,10 +79,10 @@ export default defineUserConfig({
     // "@ObjectDetection": path.resolve(__dirname, "./components/ai/ObjectDetection.vue"),
     // "@TestHome": path.resolve(__dirname, "./components/TestHome.vue"),
 
-    "@theme-hope/components/HomePage": path.resolve(
-      __dirname,
-      "./components/BlogHome.js"
-    ),
+    // "@theme-hope/components/HomePage": path.resolve(
+    //   __dirname,
+    //   "./components/BlogHome.js"
+    // ),
 
 
   },
