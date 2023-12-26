@@ -176,7 +176,7 @@ if __name__ == '__main__':
     from functools import partial
     args = get_args()
     if args.image_bed is None:
-        print("不适用任何图床...")
+        print("不适用任何图床......")
     else:
         print(f"采用图床 {args.image_bed}")
     process_pipelines = [partial(img_path_edit, image_bed=args.image_bed),

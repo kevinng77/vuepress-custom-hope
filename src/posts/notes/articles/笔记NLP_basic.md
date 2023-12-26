@@ -635,9 +635,9 @@ Size of hidden layer: the dimension of word vector usually being 100 to few thou
 
 Training set:
 
-+ one positive sample:  {orange, juice}
++ one positive sample:  `{orange, juice}`
 
-+ k negative sample: {orange, king} etc
++ k negative sample: `{orange, king}` etc
   + k = 5-20 for  smaller data sets
   + k = 2-5 for larger data set
 

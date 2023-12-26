@@ -49,7 +49,7 @@ $$
  1 \text { )if } p_{j} \mid a, \text { then } a^{1+k_{\varphi}(n)} \equiv 0 \equiv a \bmod p_{j}
   $$
 
-  ​			2）若 $a \neq 0\ mod\$  $p_{j},$ 则 $\left(a, p_{j}\right)=1,$ 根 据 欧 拉 定 理 有 $a^{\phi\left(p_{j}\right)}=1\ mod\ p_{j}$
+  ​			2）若 $a \neq 0\mod p_{j},$ 则 $\left(a, p_{j}\right)=1,$ 根 据 欧 拉 定 理 有 $a^{\phi\left(p_{j}\right)}=1\ mod\ p_{j}$
   ​			则 $a^{1+k e(n)} \bmod p_{j}=a^{1+k \prod_{i=1}^{n} \varphi\left(p_{i}\right) \quad}\bmod p_{j}=a \bmod p_{j}$
   ​			综合 1 )和 2 ) 有 
 
@@ -117,7 +117,7 @@ def gcd(a, b):
 
 证明:
 
-设 $a = km,b = im, a>b,k>i,(k,i)=1$ 其中 m 是 a 与 b 的最大公约数 , $a - nb = (k-ni)m$ 等价于 $a\%b =(k-ni)m,(k-ni  ) \in Z\$ 且由于求余的性质可得 $(k-ni)<i\ \&\ (k-ni,i)=1:$ , 可见 $m$是$b$与$a\%b$的一个公约数 ,又因为$(k-ni,i)=1$,所以$m$为两者最大公约数, $gcd(a,b) = gcd(b,a\%b)$ 
+设 $a = km,b = im, a>b,k>i,(k,i)=1$ 其中 m 是 a 与 b 的最大公约数 , $a - nb = (k-ni)m$ 等价于 $a\%b =(k-ni)m,(k-ni  ) \in Z$ 且由于求余的性质可得 $(k-ni)<i\ \&\ (k-ni,i)=1:$ , 可见 $m$是$b$与$a\%b$的一个公约数 ,又因为$(k-ni,i)=1$,所以$m$为两者最大公约数, $gcd(a,b) = gcd(b,a\%b)$ 
 
 ### Extended Euclidean Algorithm
 

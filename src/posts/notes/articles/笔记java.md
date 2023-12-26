@@ -958,7 +958,7 @@ String line = fr.readLine();  // while (line != null)
 
  **InputStreamReader** 
 
-```JAVA
+```java
 InputStream is = new FileInputStream("./test");
 Reader isr = new InputStreamReader(is, "GBK");
 BufferedReader br = new BufferedReader(isr);

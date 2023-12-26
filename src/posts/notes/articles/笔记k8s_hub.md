@@ -216,7 +216,7 @@ proxy:
 
 :::
 
-1. 打开你的 K8S resource，界面如下：![image-20230903111634269](/assets/img/k8s_hub/image-20230903111634269.png)
+1. 打开你的 K8S resource，界面如下：![image-20230903111634269](https://pic2.zhimg.com/80/v2-2dd69265b0b0c99d9f8e5c0367067095_1440w.webp)
 
 2. 在你的 K8S resource 中点击 connect -> open cloud shell，会出现下面的操作终端。
 
@@ -234,7 +234,11 @@ proxy:
 4. 然后 helm 一键部署 jupyterhub 应用，在你的终端输入：
 
    ```shell
-   helm upgrade --cleanup-on-fail \ --install cv jupyterhub/jupyterhub \ --namespace coe \ --create-namespace \ --values config.yaml
+   helm upgrade --cleanup-on-fail \ 
+   	--install cv jupyterhub/jupyterhub \ 
+   	--namespace coe \ 
+   	--create-namespace \ 
+   	--values config.yaml
    ```
 
    执行后开始构建集群，构建成功后等待几分钟，会有这种提示：

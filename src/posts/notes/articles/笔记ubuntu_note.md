@@ -159,7 +159,7 @@ sudo apt install indicator-multiload
 
 #### ZSH
 
-```SHELL
+```shell
 sudo apt install zsh
 ```
 

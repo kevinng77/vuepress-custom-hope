@@ -1162,7 +1162,7 @@ export default defineClientConfig({
 
 如果是部署到自己的服务器，把服务器地址指向 dist 文件目录即可，比如 nginx：
 
-```conf
+```
 server {
   listen 80;
   listen [::]:80;

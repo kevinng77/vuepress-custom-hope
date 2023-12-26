@@ -559,7 +559,7 @@ err := json.Unmarshal([]byte(jsonBuf), &a)
 读取文件：`f, err = os.Open(path string)` ；
 每次读取一行：
 
-```GO
+```go
 r := bufio.NewReader(f)
 for {
     text, _, err := r.ReadLine()

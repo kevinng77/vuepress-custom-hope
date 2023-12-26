@@ -454,7 +454,7 @@ return 0;
 
 #### connect()
 
-```C
+```c
 #include <sys/types.h> /* See NOTES */
 #include <sys/socket.h>
 int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
@@ -476,7 +476,7 @@ int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 
 #### send()
 
-```C
+```c
 #include <sys/types.h>
 #include <sys/socket.h>
 ssize_t send(int sockfd, const void *buf, size_t len, int flags);
@@ -594,7 +594,7 @@ return 0;
 
 ### bind()
 
-```C
+```c
 #include <sys/types.h>
 #include <sys/socket.h>
 int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
@@ -616,7 +616,7 @@ int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 
 #### listen()
 
-```C
+```c
 #include <sys/types.h> /* See NOTES */
 #include <sys/socket.h>
 int listen(int sockfd, int backlog);
@@ -634,7 +634,7 @@ int listen(int sockfd, int backlog);
 
 #### accept()
 
-```C
+```c
 #include <sys/types.h> /* See NOTES */
 #include <sys/socket.h>
 int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);

@@ -522,7 +522,7 @@ df.filter(udf(df['age'])).show()
 
 可以将聚合前与聚合后的数据显示在同一个表中。
 
-```SQL
+```sql
 # 在 * 数据后追加一列窗口，代表学生的平均成绩
 spark.sql("""
           SELECT *, AVG(SCORE) OVER() AS avg_score FROM stu

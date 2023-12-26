@@ -87,7 +87,7 @@ pipeline:
 
 如果用伪代码来表示这个流程，就是：
 
-```PYTHON
+```python
 # 毕竟是伪代码，因此逻辑不会很严谨
 message = parse_user_input
 # message 为数据结构，在 `rasa.shared.nlu.training_data.message` 可查看。

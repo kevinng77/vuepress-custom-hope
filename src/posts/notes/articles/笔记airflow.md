@@ -545,3 +545,5 @@ airflow tasks test tutorial sleep 2015-06-01
 [知乎网友笔记](https://zhuanlan.zhihu.com/p/336458279)
 
 [DAGS 官网笔记](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dags.html#concepts-trigger-rules)
+
+[airflow docker 部署](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html)

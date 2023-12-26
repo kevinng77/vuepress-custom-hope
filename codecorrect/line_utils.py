@@ -88,8 +88,10 @@ def vuepress_hope_format(s):
 def code_block_edit(s):
     s = re.sub(r"```[cC]\+\+",r"```cpp",s)
     s = re.sub(r"```[cC]\#",r"```c",s)
-    s = s.lower()
+    if "```" in s and len(s) < 30:
+        s = s.lower()
     return s
+
 
 
 def sep_ch_and_en(s):

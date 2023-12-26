@@ -206,7 +206,7 @@ Since sometimes, rating with 1 indicates that the user do not like the item, if 
 
 Referred to the optimizing step, $\beta, \mu$ are recomputed and updated after gradient step. Since the beta and mu will be used in optimizing user latent factors.
 
-```PYTHON
+```python
 i_batch = tx[i_ids, :]
 i_batch = i_batch.A  # transfer csr to np.narray
 i_batch = torch.tensor(i_batch, dtype=dtype, device=device)
