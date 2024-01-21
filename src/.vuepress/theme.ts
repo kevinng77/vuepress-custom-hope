@@ -10,9 +10,8 @@ export default hopeTheme({
     name: "吴嘉文 Kevin",
     url: "http://antarina.tech/",
   },
-  
+  darkmode: "disable",
   iconAssets: "iconfont",
-  darkmode: "disabled",
   backToTop: false,
   // logo: "/logo.svg",
   favicon: "/logo.svg",
