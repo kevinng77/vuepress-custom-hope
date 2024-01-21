@@ -10,10 +10,10 @@ echo -e "\033[35m >>> 脚本执行路径： `pwd` \033[0m"
 git_branch="master"
 temp_blog_path="./cleaned_post"
 source_blog_path="/home/kevin/nut/post/"
-blog_public_folder_path="/home/kevin/test/blog/src/.vuepress/public"
-blog_output_folder_path="/home/kevin/test/blog/src/posts"
-dist_git_folder_path="/home/kevin/test/dist/"  # dist git 文件夹博客文件所在路径
-dist_source_folder_path="/home/kevin/test/blog/src/.vuepress/dist"
+blog_public_folder_path="./src/.vuepress/public"
+blog_output_folder_path="./src/posts"
+dist_git_folder_path="../dist/"  # dist git 文件夹博客文件所在路径
+dist_source_folder_path="./src/.vuepress/dist"
 
 echo -e "\033[36m >>> Switching to master branch..... \033[0m"
 
