@@ -115,7 +115,7 @@ def main(args, process_pipelines=[]):
     
     # 获取所有需要编辑的文章
     files = get_article_list(source_blog_path, output_blog_path)
-    print(f"一共有 {len(files)} 篇文章要处理\n")
+    print(f"一共有 {len(files)} 篇文章要处理(不考虑编辑时间的话)，后续仅会对近期修改的博客进行更正\n")
 
     processed_files = []
     for source_file, output_file, file_name in files:

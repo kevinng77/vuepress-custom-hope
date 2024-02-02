@@ -18,8 +18,7 @@ tag:
 在拥有公网 IP 的服务器上操作
 
 ```shell
-sudo mkdir /etc/frp
-vim /etc/frp/frps.ini
+vim ~/frp/frps.ini
 ```
 
 而后在  `frps.ini` 中写入：
@@ -40,7 +39,7 @@ token = your_passwd
 而后在服务器上安装 frp docker 即可：
 
 ```shell
-docker run --restart=always --network host -d -v /etc/frp/frps.ini:/etc/frp/frps.ini snowdreamtech/frps
+docker run --restart=always --network host -d -v ~/frp/frps.ini:/etc/frp/frps.ini snowdreamtech/frps:0.48.0
 ```
 
 ### 客户端操作
@@ -87,7 +86,7 @@ local_ip = 127.0.0.1
 同样的启动 frp client：
 
 ```shell
-docker run --restart=always --net=host -d -v /etc/frp/:/etc/frp/ snowdreamtech/frpc
+docker run --restart=always --net=host -d -v /etc/frp/:/etc/frp/ snowdreamtech/frpc:0.48.0 
 ```
 
 ### 监控界面
