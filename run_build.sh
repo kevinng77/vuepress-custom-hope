@@ -54,12 +54,12 @@ echo -e "执行 cp -r $dist_source_folder_path/* $dist_git_folder_path"
 
 cp -r $dist_source_folder_path/* $dist_git_folder_path
 
-cd /home/kevin/test/dist
+cd $dist_git_folder_path
 
 echo -e "\033[36m >>> Push 到服务器 \033[0m"
 git add .
 git commit -m "add blog"
 echo -e "\033[36m >>> Push 到 github 服务器 \033[0m"
-git push
+git push -f 
 echo -e "\033[36m >>> Push 到腾云服务器 \033[0m"
-git push kmtencent
+git push -f kmtencent
