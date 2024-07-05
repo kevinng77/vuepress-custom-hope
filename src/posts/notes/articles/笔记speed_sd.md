@@ -20,7 +20,7 @@ https://wrong.wang/blog/20231111-consistency-is-all-you-need/
 
 - Consistency Model 基于扩散模型，增加了一个推导约束：每个样本到噪声的加噪轨迹上的每个点都可以通过一个函数 $f(x_t, t)$ 映射回轨迹的起点。同时 CM 也对模型训练时的损失、sample 方案等进行了改动，以允许我们使用 2-4 个 step 来生成高质量图片。
 
-![image-20231216210637171](/assets/img/speed_sd/image-20231216210637171.png)
+![img = x400](/assets/img/speed_sd/image-20231216210637171.png)
 
 + LCM 在 SD 基础上进行蒸馏，在蒸馏过程中加入了 CM 中的 Consistency 约束。官方的用词是 `distill`：
 
@@ -50,7 +50,7 @@ SDXL Turbo 通过蒸馏 SDXL，根据官方描述，在 A100 上，生成一张 
 
 以下为大致训练方式：
 
-![image-20231216222100682](/assets/img/speed_sd/image-20231216222100682.png)
+![image-20231216222100682](/assets/img/speed_sd/image-20231216222100682.png =x400)
 
 其中 ADD-student 的输入由 $x_0$ 经过 forward diffusion process 生成，而 DM-teacher 的输入由 ADD-Student 的输出经过  forward diffusion process 生成。
 

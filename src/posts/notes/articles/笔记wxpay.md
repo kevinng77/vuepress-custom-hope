@@ -81,9 +81,9 @@ category:
 
 #### 示例图
 
-参考[微信小程序开发指引](https://pay.weixin.qq.com/wiki/doc/apiv3/open/pay/chapter2_8_2.shtml)实际前后端发生的流程图如下：
+参考[微信小程序开发指引](https://pay.weixin.qq.com/wiki/doc/apiv3/open/pay/chapter2_8_2.shtml)实际前后端发生的流程图如下： 
 
-![业务流程图](https://pay.weixin.qq.com/wiki/doc/apiv3/assets/assets/img/pay/wechatpay/6_2.png)
+![业务流程图](/assets/img/wxpay/image-20240202231625784.png =x850)
 
 
 

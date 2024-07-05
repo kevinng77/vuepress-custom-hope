@@ -10,7 +10,7 @@ from line_utils import *
 from math_utils import EditBlogMath, has_ch_char
 
 
-def edit_article(source_file, output_file, pre_processer):
+def edit_article(source_file, output_file, pre_processer, args):
     global ALL_CHARS
 
     text = []
@@ -29,7 +29,7 @@ def edit_article(source_file, output_file, pre_processer):
     file_name = os.path.basename(source_file)
     folder_name  = f'img/{re.sub(".md", "", file_name)}'
     source_img_folder = os.path.join(os.path.dirname(source_file),folder_name)
-    target_img_folder = os.path.join("/home/kevin/test/blog/src/.vuepress/public/assets", folder_name)
+    target_img_folder = os.path.join(args.target_img_folder, folder_name)
     # if os.path.isdir(target_img_folder):
     #     os.system(f"rm -r {target_img_folder}")
     if os.path.exists(source_img_folder):
@@ -125,7 +125,8 @@ def main(args, process_pipelines=[]):
             # print("processing\t", source_file)
             status = edit_article(source_file = source_file,
                                     output_file = output_file,
-                                    pre_processer= pre_processer)
+                                    pre_processer= pre_processer,
+                                    args=args)
             if status:
                 processed_files.append((file_time, file_name))
 
@@ -164,6 +165,7 @@ def get_args():
                         help="输出的格式化后 md 文件的路径")
     parser.add_argument("--name",default="",type=str)
     parser.add_argument("--ignore_ttf_subset",action="store_true")
+    parser.add_argument("--target_img_folder", default='/home/kevin/blog/src/.vuepress/public/assets')
     parser.add_argument("--ttf_path",default=".")
     parser.add_argument("--image_bed",type=str,default=None,
                         help="当部署服务器博客时，采用的图床 root 地址")
